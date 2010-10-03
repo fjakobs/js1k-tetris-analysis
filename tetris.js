@@ -13,6 +13,11 @@ samples=[];
  * Subchunk2Size: 20000 bytes
  * duration = 416ms
  */
+ 
+function limit(value) {
+    return Math.max(-10000, Math.min(10000, value));
+}
+ 
 waveHeader = "UklGRgAAAABXQVZFZm10IBAAAAABAAEAwF0AAIC7AAACABAAZGF0YSBO";
 for(P=0;P<96;){
     k="/SN;__/NK;OL/QN;__/OL;NK4L@@_C4_G@OL4SO@__4QN@OL3NB?_G3_K?OL/QN;__/SK;__4OL@__4LC@_G4LC@_G4_C@_G".charCodeAt(P);
@@ -20,7 +25,7 @@ for(P=0;P<96;){
     // value of 95 is silence
     if (k !== 95) {
         for(j=0;j<10000;){
-            v=Math.max(-10000,Math.min(10000,1000000*Math.sin(j*Math.pow(2,k/C)/695)))/Math.exp(j++/5000);
+            v=limit(1000000*Math.sin(j*Math.pow(2,k/C)/695))/Math.exp(j++/5000);
             D+=String.fromCharCode(v & 255, v>>8 & 255)
         }
     }
