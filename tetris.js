@@ -1,6 +1,19 @@
 C=12;
 f=[];
 R=[];
+
+/**
+ * format: pcm
+ * num channels: 1
+ * sample rate: 24kHz
+ * byte rate: 48000 (SampleRate * NumChannels * BitsPerSample/8)
+ * block align: 2 (NumChannels * BitsPerSample/8)
+ * bits per sample: 16
+ *
+ * Subchunk2Size: 20000 bytes
+ * duration = 416ms
+ */
+waveHeader = "UklGRgAAAABXQVZFZm10IBAAAAABAAEAwF0AAIC7AAACABAAZGF0YSBO";
 for(P=0;P<96;){
     k="/SN;__/NK;OL/QN;__/OL;NK4L@@_C4_G@OL4SO@__4QN@OL3NB?_G3_K?OL/QN;__/SK;__4OL@__4LC@_G4LC@_G4_C@_G".charCodeAt(P);
     D="\0\0";
@@ -8,7 +21,7 @@ for(P=0;P<96;){
         v=Math.max(-10000,Math.min(10000,1000000*Math.sin(j*Math.pow(2,k/C)/695)))/Math.exp(j++/5000);
         D+=String.fromCharCode(v & 255, v>>8 & 255)
     }
-    R[P++]=new Audio("data:audio/wav;base64,UklGRgAAAABXQVZFZm10IBAAAAABAAEAwF0AAIC7AAACABAAZGF0YSBO"+btoa(D))
+    notes[P++]=new Audio("data:audio/wav;base64," + waveHeader + btoa(D))
 }
 for(e=i=252;i--;)
     f[i]=i%C&&i<240?(i+1)%C?r=0:'█<br>':'█';
