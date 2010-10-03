@@ -2,10 +2,9 @@ M=Math;
 C=12;
 f=[];
 R=[];
-A='charCodeAt';
 S='slice';
 for(P=0;P<96;){
-    k="/SN;__/NK;OL/QN;__/OL;NK4L@@_C4_G@OL4SO@__4QN@OL3NB?_G3_K?OL/QN;__/SK;__4OL@__4LC@_G4LC@_G4_C@_G"[A](P);
+    k="/SN;__/NK;OL/QN;__/OL;NK4L@@_C4_G@OL4SO@__4QN@OL3NB?_G3_K?OL/QN;__/SK;__4OL@__4LC@_G4LC@_G4_C@_G".charCodeAt(P);
     D="\0\0";
     for(j=0;k<95&&j<1e4;){
         v=M.max(-1e4,M.min(1e4,1e6*M.sin(j*M.pow(2,k/C)/695)))/M.exp(j++/5e3);
@@ -19,7 +18,7 @@ for(e=i=252;i--;)
 t=p=4;
 function d(c){
     for(q=p+[13,14,26,25][r%4],i=1;i<99;q+=((i*=2)==8?[9,-37,-9,37]:[1,C,-1,-C])[r%4])
-        if('36cqrtx'[A](t)&i)
+        if('36cqrtx'.charCodeAt(t)&i)
             if(-c) {
                 if(f[q])
                     return 1
