@@ -25,7 +25,18 @@ for(P=0;P<96;){
     // value of 95 is silence
     if (k !== 95) {
         for(j=0;j<10000;){
-            v=limit(1000000*Math.sin(j*Math.pow(2,k/C)/695))/Math.exp(j++/5000);
+            // damping = 1 .. 7.389
+            // sample is attenuated towards the end
+            var damping = Math.exp(j++/5000);
+            var amplitude = 1000000;
+
+            // http://en.wikipedia.org/wiki/Note
+            n = k - 47 - 12;
+            frequency = Math.pow(2,n/C) * 440;
+            t = j * (0.416 / 10000);
+            w = 2 * Math.PI * frequency;
+
+            v=limit(amplitude * Math.sin(t*w)) / damping;
             D+=String.fromCharCode(v & 255, v>>8 & 255)
         }
     }
