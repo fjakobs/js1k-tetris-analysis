@@ -1,7 +1,6 @@
 C=12;
 f=[];
 R=[];
-S='slice';
 for(P=0;P<96;){
     k="/SN;__/NK;OL/QN;__/OL;NK4L@@_C4_G@OL4SO@__4QN@OL3NB?_G3_K?OL/QN;__/SK;__4OL@__4LC@_G4LC@_G4_C@_G".charCodeAt(P);
     D="\0\0";
@@ -47,8 +46,8 @@ o=function(){
         t=~~(7*Math.random()),p=r=4;
         e=d(1)?1e9:e;
         for(y=0;y<240;)
-            if(f[S](y,y+=C).join().indexOf('0')<0)
-                f=f[S](0,C).concat(f[S](0,y-C),f[S](y))
+            if(f.slice(y,y+=C).join().indexOf('0')<0)
+                f=f.slice(0,C).concat(f.slice(0,y-C),f.slice(y))
     }
     setTimeout(o,e*=0.997)
 };
