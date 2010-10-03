@@ -1,6 +1,6 @@
 C=12;
 f=[];
-R=[];
+samples=[];
 
 /**
  * format: pcm
@@ -21,7 +21,7 @@ for(P=0;P<96;){
         v=Math.max(-10000,Math.min(10000,1000000*Math.sin(j*Math.pow(2,k/C)/695)))/Math.exp(j++/5000);
         D+=String.fromCharCode(v & 255, v>>8 & 255)
     }
-    notes[P++]=new Audio("data:audio/wav;base64," + waveHeader + btoa(D))
+    samples[P++]=new Audio("data:audio/wav;base64," + waveHeader + btoa(D))
 }
 for(e=i=252;i--;)
     f[i]=i%C&&i<240?(i+1)%C?r=0:'█<br>':'█';
@@ -54,7 +54,7 @@ onkeydown=m;
 o=function(){
     P=P%96;
     for(_ in[1,2,3])
-        R[P++].play();
+        samples[P++].play();
     if(m()){
         t=~~(7*Math.random()),p=r=4;
         e=d(1)?1e9:e;
