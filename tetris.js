@@ -1,4 +1,3 @@
-M=Math;
 C=12;
 f=[];
 R=[];
@@ -7,7 +6,7 @@ for(P=0;P<96;){
     k="/SN;__/NK;OL/QN;__/OL;NK4L@@_C4_G@OL4SO@__4QN@OL3NB?_G3_K?OL/QN;__/SK;__4OL@__4LC@_G4LC@_G4_C@_G".charCodeAt(P);
     D="\0\0";
     for(j=0;k<95&&j<1e4;){
-        v=M.max(-1e4,M.min(1e4,1e6*M.sin(j*M.pow(2,k/C)/695)))/M.exp(j++/5e3);
+        v=Math.max(-1e4,Math.min(1e4,1e6*Math.sin(j*Math.pow(2,k/C)/695)))/Math.exp(j++/5e3);
         D+=String.fromCharCode(v&255,v>>8&255)
     }
     R[P++]=new Audio("data:audio/wav;base64,UklGRgAAAABXQVZFZm10IBAAAAABAAEAwF0AAIC7AAACABAAZGF0YSBO"+btoa(D))
@@ -45,7 +44,7 @@ o=function(){
     for(_ in[1,2,3])
         R[P++].play();
     if(m()){
-        t=~~(7*M.random()),p=r=4;
+        t=~~(7*Math.random()),p=r=4;
         e=d(1)?1e9:e;
         for(y=0;y<240;)
             if(f[S](y,y+=C).join().indexOf('0')<0)
