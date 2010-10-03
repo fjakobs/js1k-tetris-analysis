@@ -17,9 +17,12 @@ waveHeader = "UklGRgAAAABXQVZFZm10IBAAAAABAAEAwF0AAIC7AAACABAAZGF0YSBO";
 for(P=0;P<96;){
     k="/SN;__/NK;OL/QN;__/OL;NK4L@@_C4_G@OL4SO@__4QN@OL3NB?_G3_K?OL/QN;__/SK;__4OL@__4LC@_G4LC@_G4_C@_G".charCodeAt(P);
     D="\0\0";
-    for(j=0;k<95&&j<10000;){
-        v=Math.max(-10000,Math.min(10000,1000000*Math.sin(j*Math.pow(2,k/C)/695)))/Math.exp(j++/5000);
-        D+=String.fromCharCode(v & 255, v>>8 & 255)
+    // value of 95 is silence
+    if (k !== 95) {
+        for(j=0;j<10000;){
+            v=Math.max(-10000,Math.min(10000,1000000*Math.sin(j*Math.pow(2,k/C)/695)))/Math.exp(j++/5000);
+            D+=String.fromCharCode(v & 255, v>>8 & 255)
+        }
     }
     samples[P++]=new Audio("data:audio/wav;base64," + waveHeader + btoa(D))
 }
