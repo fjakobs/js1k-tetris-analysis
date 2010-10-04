@@ -112,24 +112,19 @@ function collision() {
  * Move current block - either by keypress if by timer tick. Then redraw the 
  * playing field.
  */
-function move(e){
-    if (e)
-        Q=[-1,0,1][e.keyCode-37]||0;
-    else
-        Q=columns;
-        
+function move(offset, rot){
     // remove block from playing field
     clear();
     
     // move and rotate block
-    position+=Q;
-    rotation+=!Q;
+    position += offset;
+    rotation += rot;
     
     // if collision at new position revert move/rotate
     s=collision();
     if(s) {
-        position-=Q;
-        rotation-=!Q;
+        position -= offset;
+        rotation -= rot;
     }
     
     // draw block at new position
@@ -142,7 +137,22 @@ function move(e){
     return s
 }
 
-onkeydown=move;
+onkeydown=function(e) {
+    var rotation = 0;
+    var offset = 0;
+    
+    // left arrow key
+    if (e.keyCode == 37)
+        offset = -1;
+    // right arrow key
+    else if (e.keyCode == 39)
+        offset = 1;
+    // all other keys rotate
+    else
+        rotation = 1;
+    
+    move(offset, rotation);
+};
 
 timeout = 252;
 tick=function(){
@@ -152,7 +162,7 @@ tick=function(){
         samples[P++].play();
     
     // move block down
-    if(move()) {
+    if(move(columns, 0)) {
         // if collision occured initialize new block
         blockType=Math.floor(7*Math.random());
         position=4;
