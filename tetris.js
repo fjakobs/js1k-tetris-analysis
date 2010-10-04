@@ -110,18 +110,36 @@ function collision() {
 }
 
 /**
- * Move current block. Either by keypress if by timer tick
+ * Move current block - either by keypress if by timer tick. Then redraw the 
+ * playing field.
  */
 function move(e){
-    Q=[-1,0,1,columns][e?e.keyCode-37:3]||0;
+    if (e)
+        Q=[-1,0,1][e.keyCode-37]||0;
+    else
+        Q=columns;
+        
+    // remove block from playing field
     clear();
+    
+    // move and rotate block
     position+=Q;
     rotation+=!Q;
+    
+    // if collision at new position revert move/rotate
     s=collision();
-    if(s)
-        position-=Q,rotation-=!Q;
+    if(s) {
+        position-=Q;
+        rotation-=!Q;
+    }
+    
+    // draw block at new position
     draw();
+    
+    // render playing field to screen
     document.body.innerHTML=field.join('').replace(/0/g,'░');
+    
+    // return collision
     return s
 }
 
