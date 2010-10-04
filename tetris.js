@@ -56,7 +56,10 @@ function d(c){
             else f[q]=c
 }
 
-function m(e){
+/**
+ * Move current block. Either by keypress if by timer tick
+ */
+function move(e){
     Q=[-1,0,1,C][e?e.keyCode-37:3]||0;
     d(0);
     p+=Q;
@@ -69,12 +72,12 @@ function m(e){
     return s
 }
 
-onkeydown=m;
+onkeydown=move;
 o=function(){
     P=P%96;
     for(_ in[1,2,3])
         samples[P++].play();
-    if(m()){
+    if(move()){
         t=~~(7*Math.random()),p=r=4;
         e=d(1)?1e9:e;
         for(y=0;y<240;)
