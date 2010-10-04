@@ -46,8 +46,6 @@ for(P=0;P<96;){
 // used to generate the HTML.
 field=[];
 columns=12;
-e = 252;
-r = 0;
 
 for (var row=0; row<21; row++) {
     for (var column=0; column<columns; column++) {
@@ -64,15 +62,47 @@ for (var row=0; row<21; row++) {
     }
 }
     
-t=p=4;
-function d(c){
-    for(q=p+[13,14,26,25][r%4],i=1;i<99;q+=((i*=2)==8?[9,-37,-9,37]:[1,columns,-1,-columns])[r%4])
-        if('36cqrtx'.charCodeAt(t)&i)
+e = 252;
+rotation = 0;
+blockType = 4;
+position = 4;
+
+/**
+ * This function has three purposes:
+ * 
+ * 1. (c=1) Check for collision of the current block with the playing field
+ * 2. (c=0) Remove the block from the playing field
+ * 3. (c='▒') draw the black on the playing field
+ * 
+ * @param {Integer|String} c If set to 0 or a string replace the current block 
+ *     with c in the playing field array, otherwise check for collision
+ * @return {Integer} returns 1 if a collision is detected and 'undefined' otherwise
+ */
+function d(c) {
+    var cell = position + [13,14,26,25][rotation%4];
+    for(i=1; i<99; i*=2) {
+        cell += (i==8?[9,-37,-9,37]:[1,columns,-1,-columns])[rotation%4]
+        var block = '36cqrtx'.charCodeAt(blockType);
+        if(block & i)
             if(-c) {
-                if(field[q])
+                // collision
+                if(field[cell])
                     return 1
             }
-            else field[q]=c
+            else field[cell] = c
+    }
+}
+
+function clear() {
+    d(0);
+}
+
+function draw() {
+    d('▒');
+}
+
+function collision() {
+    return d(1);
 }
 
 /**
@@ -80,13 +110,13 @@ function d(c){
  */
 function move(e){
     Q=[-1,0,1,columns][e?e.keyCode-37:3]||0;
-    d(0);
-    p+=Q;
-    r+=!Q;
-    s=d(1);
+    clear();
+    position+=Q;
+    rotation+=!Q;
+    s=collision();
     if(s)
-        p-=Q,r-=!Q;
-    d('▒');
+        position-=Q,rotation-=!Q;
+    draw();
     document.body.innerHTML=field.join('').replace(/0/g,'░');
     return s
 }
@@ -97,8 +127,8 @@ o=function(){
     for(_ in[1,2,3])
         samples[P++].play();
     if(move()){
-        t=~~(7*Math.random()),p=r=4;
-        e=d(1)?1e9:e;
+        blockType=~~(7*Math.random()),position=rotation=4;
+        e=collision()?1e9:e;
         for(y=0;y<240;)
             if(field.slice(y,y+=columns).join().indexOf('0')<0)
                 field=field.slice(0,columns).concat(field.slice(0,y-columns),field.slice(y))
