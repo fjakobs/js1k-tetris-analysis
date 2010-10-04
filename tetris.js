@@ -82,6 +82,10 @@ function d(c) {
     var cell = position + [13,14,26,25][rotation%4];
     for(i=1; i<99; i*=2) {
         cell += (i==8?[9,-37,-9,37]:[1,columns,-1,-columns])[rotation%4]
+        // the characters are bit masks for the blocks:
+        // 110011  110110  1100011  1110001  1110010  1110100  1111000
+        // ##      ##        ##       #       #       #        
+        // ##       ##     ##       ###      ###      ###      ####
         var block = '36cqrtx'.charCodeAt(blockType);
         if(block & i)
             if(-c) {
