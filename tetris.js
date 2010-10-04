@@ -1,5 +1,3 @@
-C=12;
-f=[];
 samples=[];
 
 /**
@@ -32,7 +30,7 @@ for(P=0;P<96;){
 
             // http://en.wikipedia.org/wiki/Note
             n = k - 47 - 12;
-            frequency = Math.pow(2,n/C) * 440;
+            frequency = Math.pow(2,n/12) * 440;
             t = j * (0.416 / 10000);
             w = 2 * Math.PI * frequency;
 
@@ -42,25 +40,41 @@ for(P=0;P<96;){
     }
     samples[P++]=new Audio("data:audio/wav;base64," + waveHeader + btoa(D))
 }
-for(e=i=252;i--;)
-    f[i]=i%C&&i<240?(i+1)%C?r=0:'█<br>':'█';
+
+// initialize playing field
+// one dimensional array[12*21] of strings. Stores current game state and is 
+// used to generate the HTML.
+field=[];
+columns=12;
+e = 252;
+r = 0;
+for(i=252;i--;)
+    // if cell is not bottom or left border
+    if (i%columns && i<240)
+        // if cell is not right border
+        if ((i+1) % columns)
+            field[i] = 0
+        else 
+            field[i] = '█<br>';
+    else
+        field[i] = '█'
 
 t=p=4;
 function d(c){
-    for(q=p+[13,14,26,25][r%4],i=1;i<99;q+=((i*=2)==8?[9,-37,-9,37]:[1,C,-1,-C])[r%4])
+    for(q=p+[13,14,26,25][r%4],i=1;i<99;q+=((i*=2)==8?[9,-37,-9,37]:[1,columns,-1,-columns])[r%4])
         if('36cqrtx'.charCodeAt(t)&i)
             if(-c) {
-                if(f[q])
+                if(field[q])
                     return 1
             }
-            else f[q]=c
+            else field[q]=c
 }
 
 /**
  * Move current block. Either by keypress if by timer tick
  */
 function move(e){
-    Q=[-1,0,1,C][e?e.keyCode-37:3]||0;
+    Q=[-1,0,1,columns][e?e.keyCode-37:3]||0;
     d(0);
     p+=Q;
     r+=!Q;
@@ -68,7 +82,7 @@ function move(e){
     if(s)
         p-=Q,r-=!Q;
     d('▒');
-    document.body.innerHTML=f.join('').replace(/0/g,'░');
+    document.body.innerHTML=field.join('').replace(/0/g,'░');
     return s
 }
 
@@ -81,8 +95,8 @@ o=function(){
         t=~~(7*Math.random()),p=r=4;
         e=d(1)?1e9:e;
         for(y=0;y<240;)
-            if(f.slice(y,y+=C).join().indexOf('0')<0)
-                f=f.slice(0,C).concat(f.slice(0,y-C),f.slice(y))
+            if(field.slice(y,y+=columns).join().indexOf('0')<0)
+                field=field.slice(0,columns).concat(field.slice(0,y-columns),field.slice(y))
     }
     setTimeout(o,e*=0.997)
 };
