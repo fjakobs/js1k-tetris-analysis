@@ -154,7 +154,7 @@ tick=function(){
     // move block down
     if(move()) {
         // if collision occured initialize new block
-        blockType=~~(7*Math.random());
+        blockType=Math.floor(7*Math.random());
         position=4;
         rotation=4;
         
