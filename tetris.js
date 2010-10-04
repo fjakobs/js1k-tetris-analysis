@@ -48,17 +48,22 @@ field=[];
 columns=12;
 e = 252;
 r = 0;
-for(i=252;i--;)
-    // if cell is not bottom or left border
-    if (i%columns && i<240)
-        // if cell is not right border
-        if ((i+1) % columns)
-            field[i] = 0
-        else 
-            field[i] = '█<br>';
-    else
-        field[i] = '█'
 
+for (var row=0; row<21; row++) {
+    for (var column=0; column<columns; column++) {
+        var i = column + row * columns;
+        // if cell is not bottom or left border
+        if (column > 0 && row < 20)
+            // if cell is not right border
+            if (column != columns-1)
+                field[i] = 0
+            else 
+                field[i] = '█<br>';
+        else
+            field[i] = '█'
+    }
+}
+    
 t=p=4;
 function d(c){
     for(q=p+[13,14,26,25][r%4],i=1;i<99;q+=((i*=2)==8?[9,-37,-9,37]:[1,columns,-1,-columns])[r%4])
