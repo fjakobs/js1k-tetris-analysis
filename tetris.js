@@ -62,7 +62,6 @@ for (var row=0; row<21; row++) {
     }
 }
     
-e = 252;
 rotation = 0;
 blockType = 4;
 position = 4;
@@ -144,17 +143,31 @@ function move(e){
 }
 
 onkeydown=move;
-o=function(){
+
+timeout = 252;
+tick=function(){
+    // play next accord
     P=P%96;
     for(_ in[1,2,3])
         samples[P++].play();
-    if(move()){
-        blockType=~~(7*Math.random()),position=rotation=4;
-        e=collision()?1e9:e;
-        for(y=0;y<240;)
+    
+    // move block down
+    if(move()) {
+        // if collision occured initialize new block
+        blockType=~~(7*Math.random());
+        position=4;
+        rotation=4;
+        
+        // if the new block causes a collision the game is over
+        // next tick timeout is 1e9
+        timeout = collision() ? 1e9 : timeout;
+        
+        // iterate over all rows and remove full rows
+        for(y=0; y<240;)
             if(field.slice(y,y+=columns).join().indexOf('0')<0)
                 field=field.slice(0,columns).concat(field.slice(0,y-columns),field.slice(y))
     }
-    setTimeout(o,e*=0.997)
+    // schedule next tick and increase speed slightly
+    setTimeout(tick,timeout*=0.997)
 };
-o()
+tick()
